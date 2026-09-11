@@ -1,0 +1,15 @@
+{
+  "assertions": 11347,
+  "checked_claims": [
+    "XLINK01/XLINK03 finite consequence",
+    "XLINK05",
+    "XLINK08",
+    "XCONE08",
+    "XLAYER07"
+  ],
+  "cone_cases": 51,
+  "graphs_exhausted": 1099,
+  "max_vertices": 5,
+  "passed": true,
+  "schema": "oracle.erdos738x595.cross-verification.v1"
+}
