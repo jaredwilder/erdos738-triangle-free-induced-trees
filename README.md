@@ -4,7 +4,7 @@
 
 Author: Jared Wilder. Banks dated 2026-08-04. First public timestamp: 2026-09-11.
 
-This repository is the focused public home for the Erdős #738 program. The parent induced-tree problem remains a larger frontier; the results below have the exact scopes stated in their individual cards.
+This repository is the focused public home for the Erdős #738 program. The current Erdős Problems record still lists #738 as **OPEN**. The results below have the exact scopes stated in their individual cards.
 
 ## Sharp type-count theorem
 
@@ -23,7 +23,7 @@ with closed forms
 - `k=2m`: `m(m+1)(4m-1)/3`;
 - `k=2m+1`: `m(m+1)(4m+5)/3`.
 
-The closed forms were independently checked against direct summation for `k=1..24`.
+The proof is structural: T05 gives the exact row bounds forced by triangle-freeness and the diagonal/parent exclusions; T06 sums those row bounds. The finite verifier is an independent regression check, not the proof source.
 
 ### Attaining construction
 
@@ -33,7 +33,11 @@ The closed forms were independently checked against direct summation for `k=1..2
 
 `2 floor(n/2) ceil(n/2) = floor(n^2/2)`
 
-active ordered types. The upper bound is therefore sharp. The parity count was independently checked for `n=1..39`.
+active ordered types. The upper bound is therefore sharp.
+
+The source bank intentionally leaves **classification of all equality cases** as an unproved target; existence of the parity extremizer is not promoted into an extremizer-classification theorem.
+
+The type-uniform framework itself comes from the Nguyen–Scott–Seymour Gyárfás–Sumner machinery. A targeted 2026-09-14 search found that framework, but did not surface this exact sharp support bound/parity extremizer. Historical novelty of T06–T09 therefore remains a **candidate requiring a dedicated literature court**, not an established priority claim.
 
 ## Exact path-signature enumeration
 
@@ -49,15 +53,17 @@ The finite verifier checks this recurrence for `d=2,3,4`; at `d=2` it recovers t
 
 The program interacts with the broader triangle-cover theory now housed at `jaredwilder/triangle-cover-number`.
 
-A central cross-result is:
+For a graph `G`, `tc(G)` is the least number of triangle-free graphs whose union is `G`. A central cross-result is:
 
 **XLINK03.** For every graph `G`,
 
 `tc(G) <= sup_v chi(G[N(v)])`.
 
-The generated next-layer target **XLAYER10** asks whether for every finite tree `T` and integer `m>=1` there is `f(T,m)` such that every graph with `tc(G)<=m` and `chi(G)>f(T,m)` contains an induced `T`. The case `m=1` recovers the Erdős #738 direction; `m=2` is the first proposed extension frontier.
+The generated next-layer target **XLAYER10** asks whether for every finite tree `T` and integer `m>=1` there is `f(T,m)` such that every graph with `tc(G)<=m` and `chi(G)>f(T,m)` contains an induced `T`.
 
-This target is recorded as unproved.
+The `m=1` case is exactly equivalent to the finite-threshold form of Erdős #738: `tc(G)<=1` means `G` is triangle-free. Conversely, if no finite chromatic threshold existed for some tree `T`, a disjoint union of finite triangle-free `T`-free graphs with unbounded chromatic numbers would itself be triangle-free, `T`-free and infinitely chromatic, contradicting #738. Thus `m=2` is genuinely the first proposed extension frontier, not merely an analogy.
+
+XLAYER10 remains unproved.
 
 ## Exact refutations
 
@@ -78,22 +84,22 @@ python verifiers/verify_erdos738_theorem_bank.py
 python verifiers/verify_erdos738_x_595_cross_forge.py
 ```
 
-Both were rerun from committed source on 2026-09-11 and exited 0.
+GitHub Actions freshly reran both committed verifiers on 2026-09-14; run `34850024953` completed successfully.
 
 | verifier | result |
 |---|---|
-| `verify_erdos738_theorem_bank.py` | active-type counts match the closed formulas exactly in the packaged finite cases |
+| `verify_erdos738_theorem_bank.py` | active-type counts match the closed formulas exactly in the packaged finite cases; local triangle-free and critical/clique-cutset audits pass |
 | `verify_erdos738_x_595_cross_forge.py` | **11,347 assertions across 1,099 graphs** through 5 vertices for the listed cross-results |
 
-A second finite audit covers **1,032 K4-free graphs**, **3,220 maximal layers**, **6,438 signature-fiber checks**, and **35,502 assertions**.
+A second historical finite audit covers **1,032 K4-free graphs**, **3,220 maximal layers**, **6,438 signature-fiber checks**, and **35,502 assertions**.
 
-These computations certify their stated finite kernels. They are not substitutes for proofs of infinite/cardinal statements.
+These computations certify their stated finite kernels. They are not substitutes for proofs of infinite/cardinal statements, and the emitted Lean missions in the historical bank were **not executed**.
 
 ## Evidence state
 
 The 174-card bank mixes proved-in-packet statements, finite computations, targets, refutations and cross-program statements. Those statuses remain distinct in the source bank.
 
-The emitted Lean missions were **not executed**, so this repository does not describe the 174 cards as Lean-certified. Historical novelty has likewise not been globally adjudicated.
+This repository does not describe the 174 cards as Lean-certified. Historical novelty has likewise not been globally adjudicated.
 
 One historical verifier artifact lists 16 recursive claims under `invalidated_by_retraction`; that file is a synthetic retraction-propagation test, not a live retraction of those claims.
 
