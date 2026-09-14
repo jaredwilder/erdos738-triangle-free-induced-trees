@@ -1,0 +1,18 @@
+name: Verification Replay
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+  workflow_dispatch:
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replay theorem-bank finite audit
+        run: python verifiers/verify_erdos738_theorem_bank.py --output /tmp/erdos738-theorem-bank.json
+      - name: Replay #738 x #595 cross-forge audit
+        run: python verifiers/verify_erdos738_x_595_cross_forge.py
