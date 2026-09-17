@@ -1,112 +1,96 @@
 # Erdős #738 — triangle-free induced-tree structure
 
-**A 174-claim research bank on triangle-free induced trees and the Gyárfás–Sumner direction, with exact sharp bounds, an attaining construction, cross-theorems with triangle-cover number, explicit refutations, and two standalone finite verifiers.**
-
-Author: Jared Wilder. Banks dated 2026-08-04. First public timestamp: 2026-09-11.
-
-This repository is the focused public home for the Erdős #738 program. The current Erdős Problems record still lists #738 as **OPEN**. The results below have the exact scopes stated in their individual cards.
+A collection of structural results around induced trees in triangle-free graphs, including a sharp type-count theorem, an attaining construction, exact path-signature enumeration, and links to triangle-cover number.
 
 ## Sharp type-count theorem
 
-For a complete ordered `d`-ary rooted tree (`d>=3`) of height `k` embedded path-induced, level-stable and type-uniform in a triangle-free graph, let `c` be the join depth and `n=k-c`.
+Consider a complete ordered `d`-ary rooted tree (`d>=3`) of height `k`, embedded path-induced, level-stable, and type-uniform in a triangle-free graph. Let `c` be a join depth and put `n=k-c`.
 
-**T06.** The number of active ordered types at depth `c` is at most
+The number of active ordered types at depth `c` is at most
 
-`floor(n^2/2)`.
+\[
+\boxed{\left\lfloor n^2/2\right\rfloor}.
+\]
 
-**T07.** Summing over join depths gives
+Summing over all join depths gives
 
-`sum_{n=1}^k floor(n^2/2)`,
+\[
+\sum_{n=1}^k\left\lfloor n^2/2\right\rfloor.
+\]
 
-with closed forms
+Equivalently,
 
-- `k=2m`: `m(m+1)(4m-1)/3`;
-- `k=2m+1`: `m(m+1)(4m+5)/3`.
+\[
+k=2m:\quad \frac{m(m+1)(4m-1)}3,
+\]
 
-The proof is structural: T05 gives the exact row bounds forced by triangle-freeness and the diagonal/parent exclusions; T06 sums those row bounds. The finite verifier is an independent regression check, not the proof source.
+and
 
-### Attaining construction
+\[
+k=2m+1:\quad \frac{m(m+1)(4m+5)}3.
+\]
 
-**T08.** Start with the complete rooted `d`-ary tree, keep every tree edge, and join two incomparable vertices exactly when their depths have opposite parity. The resulting host is triangle-free, and the rooted tree remains path-induced, level-stable and type-uniform.
+The proof comes from exact row restrictions forced by triangle-freeness and the diagonal/parent exclusions.
 
-**T09.** In this host the type indicator `A_c(a,b)` is active exactly when `a,b` have opposite parity. Hence every slice has
+## Sharpness
 
-`2 floor(n/2) ceil(n/2) = floor(n^2/2)`
+Start with the complete rooted `d`-ary tree, keep all tree edges, and join two incomparable vertices exactly when their depths have opposite parity.
 
-active ordered types. The upper bound is therefore sharp.
+The resulting graph is triangle-free, and the original rooted tree remains path-induced, level-stable, and type-uniform. At each slice, the active ordered types are exactly the opposite-parity pairs, giving
 
-The source bank intentionally leaves **classification of all equality cases** as an unproved target; existence of the parity extremizer is not promoted into an extremizer-classification theorem.
+\[
+2\left\lfloor\frac n2\right\rfloor
+\left\lceil\frac n2\right\rceil
+=
+\left\lfloor\frac{n^2}{2}\right\rfloor.
+\]
 
-The type-uniform framework itself comes from the Nguyen–Scott–Seymour Gyárfás–Sumner machinery. A targeted 2026-09-14 search found that framework, but did not surface this exact sharp support bound/parity extremizer. Historical novelty of T06–T09 therefore remains a **candidate requiring a dedicated literature court**, not an established priority claim.
+Thus the bound is attained exactly at every slice by this construction.
 
-## Exact path-signature enumeration
+## Path signatures
 
-**P05.** For an `n`-vertex induced path in a triangle-free graph, an outside vertex's neighbourhood signature is a subset of path positions containing no two consecutive vertices. Hence there are at most `F_(n+2)` signatures.
+For an induced path on `n` vertices in a triangle-free graph, the neighborhood of any outside vertex meets the path in a set containing no two consecutive positions. Therefore the number of possible signatures is at most
 
-**P06.** If successive contacts must have index gap at least `d>=2`, the signature count satisfies
+\[
+F_{n+2}.
+\]
 
-`a_d(n)=a_d(n-1)+a_d(n-d)`.
+More generally, if successive contacts must be separated by at least `d>=2`, the signature count satisfies
 
-The finite verifier checks this recurrence for `d=2,3,4`; at `d=2` it recovers the Fibonacci sequence required by P05.
+\[
+a_d(n)=a_d(n-1)+a_d(n-d).
+\]
 
-## Triangle-cover cross-hierarchy
+The verifier checks this recurrence for the packaged finite cases.
 
-The program interacts with the broader triangle-cover theory now housed at `jaredwilder/triangle-cover-number`.
+## Triangle-cover connection
 
-For a graph `G`, `tc(G)` is the least number of triangle-free graphs whose union is `G`. A central cross-result is:
+For a graph `G`, let `tc(G)` be the least number of triangle-free graphs whose union is `G`. One useful general inequality in the program is
 
-**XLINK03.** For every graph `G`,
+\[
+\boxed{tc(G)\le \sup_v \chi(G[N(v)])}.
+\]
 
-`tc(G) <= sup_v chi(G[N(v)])`.
+This motivates a broader finite-threshold question: for a fixed finite tree `T` and integer `m`, does bounded `tc(G)<=m` together with sufficiently large chromatic number force an induced copy of `T`?
 
-The generated next-layer target **XLAYER10** asks whether for every finite tree `T` and integer `m>=1` there is `f(T,m)` such that every graph with `tc(G)<=m` and `chi(G)>f(T,m)` contains an induced `T`.
+At `m=1`, this is the finite-threshold form of Erdős #738. The first genuinely new extension is `m=2`.
 
-The `m=1` case is exactly equivalent to the finite-threshold form of Erdős #738: `tc(G)<=1` means `G` is triangle-free. Conversely, if no finite chromatic threshold existed for some tree `T`, a disjoint union of finite triangle-free `T`-free graphs with unbounded chromatic numbers would itself be triangle-free, `T`-free and infinitely chromatic, contradicting #738. Thus `m=2` is genuinely the first proposed extension frontier, not merely an analogy.
+## Negative results
 
-XLAYER10 remains unproved.
+Two tempting routes are ruled out explicitly:
 
-## Exact refutations
-
-The bank also removes two tempting false routes.
-
-**595:T66.** The claim that every edge of a K4-free graph belongs to at most a fixed constant number of triangles is false even for finite graphs: arbitrarily large page-book graphs give counterexamples.
-
-**XCONE10.** A lower bound on chromatic number, criticality, induced-tree richness or type-tensor complexity of a single K4-free vertex link does not by itself force `tc(G)>2`.
-
-These are useful negative theorems because they delimit the cross-program strategy rather than merely recording failed experiments.
+- there is no universal constant bounding the number of triangles containing an edge of a `K4`-free graph; page-book graphs give arbitrarily large examples;
+- strong structure inside a single `K4`-free vertex link does not by itself force `tc(G)>2`.
 
 ## Verification
-
-Run:
 
 ```bash
 python verifiers/verify_erdos738_theorem_bank.py
 python verifiers/verify_erdos738_x_595_cross_forge.py
 ```
 
-GitHub Actions freshly reran both committed verifiers on 2026-09-14; run `34850024953` completed successfully.
+The second verifier checks 11,347 assertions across all 1,099 graphs on at most five vertices in the packaged cross-result tests. A separate historical audit covers 1,032 `K4`-free graphs and 35,502 assertions.
 
-| verifier | result |
-|---|---|
-| `verify_erdos738_theorem_bank.py` | active-type counts match the closed formulas exactly in the packaged finite cases; local triangle-free and critical/clique-cutset audits pass |
-| `verify_erdos738_x_595_cross_forge.py` | **11,347 assertions across 1,099 graphs** through 5 vertices for the listed cross-results |
+The finite checks support the stated finite lemmas and formulas; the full Erdős #738 problem remains open.
 
-A second historical finite audit covers **1,032 K4-free graphs**, **3,220 maximal layers**, **6,438 signature-fiber checks**, and **35,502 assertions**.
-
-These computations certify their stated finite kernels. They are not substitutes for proofs of infinite/cardinal statements, and the emitted Lean missions in the historical bank were **not executed**.
-
-## Evidence state
-
-The 174-card bank mixes proved-in-packet statements, finite computations, targets, refutations and cross-program statements. Those statuses remain distinct in the source bank.
-
-This repository does not describe the 174 cards as Lean-certified. Historical novelty has likewise not been globally adjudicated.
-
-One historical verifier artifact lists 16 recursive claims under `invalidated_by_retraction`; that file is a synthetic retraction-propagation test, not a live retraction of those claims.
-
-## Provenance
-
-Earlier release copies of this program remain in broad repositories such as `erdos-theorems/erdos738-frontier/` and the public archive. This focused repository is now the preferred human/citation home; the broader copies are provenance mirrors.
-
-## License
-
-Apache-2.0.
+Author: Jared Wilder. License: Apache-2.0.
